@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript">
+window.gameState = {}
+const ver = 1;
+var trials = JSON.parse(window.localStorage.getItem("trials")) || [];
+function storeTrial(){
+    var game_length = window.gameState.tickno;
+    var snake_length = window.gameState.snakelen;
+    var AI_version = ver;
+    var grid_size = `${window.settings.width}x${window.settings.height}`;
+    var human_inputs = window.gameState.humanInputs;
+    trials.push({game_length, snake_length, AI_version, grid_size, hi: human_inputs});
+    window.localStorage.setItem("trials",JSON.stringify(trials));
+}
+
+function init(settings = {}){
+    var width = settings.width      || 10;
+    var height = settings.height    || 10;
+    const cellsize = 16;
+    window.settings = {        width, height, cellsize    }
+    
+    //get target elements
+    var $parent = $(settings.container || "#game1");
+    var $controls = $("#controls");
+    
+    //place game board
+    var $board = $("#assets .board").clone();
+    window.gameState.$board = $board;
+    $board.css({
+        width: width * cellsize,
+        height: height * cellsize,
+    })
+    $parent.append($board);
+    
+    //place controls
+    var $arrow = $("#assets .arrow");
+    var directions = ["down","left","up","right"];
+    for(var i = 0; i < 4; i++){
+        var $clone = $arrow.clone();
+        $clone.attr("transform",`rotate(${90*i})`);
+        $clone.addClass(directions[i]);
+        $controls.append($clone);
+    }
+    //add event listeners
+    $(document).on("keydown",handleKeyControls);
+    $(document).on("keypress",(e)=>{
+        if(e.key==" ") stepAI();
+    });
+    
+
+    //init gamestate object
+    window.gameState.maingrid = [];
+    for(var x = 0; x < width; x++){
+        window.gameState.maingrid[x] = [];
+        for(var y = 0; y < height; y++){
+            window.gameState.maingrid[x][y] = 0;
+        }
+    }
+
+    //init snake
+    var $snakehead = $("#assets .snake").clone();
+    var $snakebody = $snakehead.clone();
+    
+    $snakehead.addClass("head").attr("data-tickno",1);
+    $snakehead.attr("transform",`translate(16,0) rotate(180)`);
+    gameState.headPos = [1,0,180];
+    $snakebody.addClass("body").attr("data-tickno",1);
+    $board.append($snakehead);
+    $board.append($snakebody);
+
+    window.gameState.maingrid[0][0] = 1;
+    window.gameState.maingrid[1][0] = 2;
+    window.gameState.tickno = 1;
+    window.gameState.snakelen = 2;
+
+    //place apple
+    var $apple =  $("#assets .apple").clone();
+    $apple.attr("transform",`translate(32,32)`);
+    $board.append($apple);
+    gameState.maingrid[2][2] = -1;
+    gameState.applePos = [2,2];
+
+    //init data
+    $("#data").append($(`<div data-ticks><span class="label">Ticks:</span><span class="out">1</span></div>`));
+    $("#data").append($(`<div data-snakelen><span class="label">Length:</span><span class="out">2</span></div>`));
+}
+
+var keyStyleTimeout;
+var movementMatrix = [];
+function handleKeyControls(e, fromAI = false){
+    clearTimeout(keyStyleTimeout);
+    $("#controls .arrow").removeClass("pressed");
+    if(e.key == "ArrowDown"){
+        $("#controls .arrow.down").addClass("pressed");
+        movementMatrix = [0,1,270];
+    }else if(e.key == "ArrowLeft"){
+        $("#controls .arrow.left").addClass("pressed");
+        movementMatrix = [-1,0,0];
+    }else if(e.key == "ArrowUp"){
+        $("#controls .arrow.up").addClass("pressed");
+        movementMatrix = [0,-1,90];
+    }else if(e.key == "ArrowRight"){
+        $("#controls .arrow.right").addClass("pressed");
+        movementMatrix = [1,0,180];
+    }else{
+        return;
+    }
+    var humanInputs = window.gameState.humanInputs || 0;
+    if(!fromAI) humanInputs++;
+    window.gameState.humanInputs = humanInputs;
+    keyStyleTimeout = setTimeout(()=>{
+        $("#controls .arrow").removeClass("pressed");
+    },1000);
+
+    moveSnake();
+}
+
+function moveSnake(){
+    var headPos = window.gameState.headPos;
+    var settings = window.settings;
+    var $board = window.gameState.$board;
+    var tickno = window.gameState.tickno;
+    var snakelen = window.gameState.snakelen;
+    $board.find(".snake.head").removeClass("head");
+    $snakehead = $("#assets .snake").clone().addClass("head");
+    $snakebody = $("#assets .snake").clone().addClass("body");
+
+    $snakebody.attr("transform",`translate(${headPos[0]*settings.cellsize},${headPos[1]*settings.cellsize}) rotate(${movementMatrix[2]+180})`);
+
+    headPos[0] += movementMatrix[0];
+    headPos[1] += movementMatrix[1];
+    headPos[2] = movementMatrix[2];
+    tickno += 1;
+    window.gameState.tickno = tickno;
+
+    $snakehead.attr("transform",`translate(${headPos[0]*settings.cellsize},${headPos[1]*settings.cellsize}) rotate(${headPos[2]})`);
+
+    $snakehead.attr("data-tickno",tickno);
+    $snakebody.attr("data-tickno",tickno);
+
+    if(headPos[0] < 0 || headPos[1] < 0) {gameOver(); return;}
+    if(headPos[0] >= settings.width || headPos[1] > settings.height) {gameOver(); return;}
+    var nextcell = window.gameState.maingrid[headPos[0]][headPos[1]];
+    if(nextcell > 0) {gameOver(); return;}
+    if(nextcell == -1){
+        window.gameState.snakelen++;
+        snakelen++;
+        spawnApple();
+    }
+    window.gameState.maingrid[headPos[0]][headPos[1]] = tickno;
+
+    var stale_tickno = tickno - snakelen + 1;
+    $board.find(`.snake[data-tickno="${stale_tickno}"]`).remove();
+    for(var x = 0; x < settings.width; x++){
+        for(var y = 0; y < settings.height; y++){
+            if(window.gameState.maingrid[x][y] == stale_tickno){
+                window.gameState.maingrid[x][y] = 0;
+            }
+        }
+    }
+
+    $board.append($snakehead);
+    $board.append($snakebody);
+
+
+   // drawNumbers(); // renders the grid matrix #s over the game rendering
+
+   var $ticks = $("#data [data-ticks]");
+   var $snakelen = $("#data [data-snakelen]");
+   $ticks.find(".out").html(tickno);
+   $snakelen.find(".out").html(snakelen);
+}
+
+function spawnApple(){
+    var grid = window.gameState.maingrid;
+    var cellsize = window.settings.cellsize;
+    var $board = window.gameState.$board;
+    $board.find(".apple").remove();
+    var empty_coords = [];
+    grid.forEach((row,yp)=>{
+        row.forEach((cell,xp)=>{
+            if(cell==0) empty_coords.push([yp,xp]);
+        })
+    });
+    var new_i = Math.floor(Math.random()*empty_coords.length);
+    var new_coords = empty_coords[new_i];
+    window.gameState.maingrid[new_coords[0]][new_coords[1]] = -1;
+    window.gameState.applePos = new_coords;
+
+    $apple =  $("#assets .apple").clone();
+    $apple.attr("transform",`translate(${new_coords[0]*cellsize},${new_coords[1]*cellsize})`);
+    $board.append($apple);
+}
+
+function drawNumbers(){
+    var grid = window.gameState.maingrid;
+    var cellsize = window.settings.cellsize;
+    $text = $("#assets .misc text").clone();
+    $text.addClass("debugtext")
+    $board = window.gameState.$board;
+    $board.find(".debugtext").remove();
+    grid.forEach((row,yp)=>{
+        row.forEach((cell,xp)=>{
+            var $clone = $text.clone();
+            $clone.html(cell);
+            $clone.attr("x",(yp + 0.25) * cellsize);
+            $clone.attr("y",(xp + 0.75) * cellsize);
+            $board.append($clone);
+        })
+    });
+    $board.append($text);
+}
+const dirmatrix = {
+    "down": [0,1,270],
+    "left": [-1,0,0],
+    "up": [0,-1,90],
+    "right":[1,0,180],
+}
+var lastcmd;
+var lastValidCheck = {};
+function stepAI(){
+    if(window.gameState.gameover) return;
+    var settings = window.settings;
+    var state = window.gameState;
+    var cmd = lastcmd;
+    var validmoves = [];
+    var pos = state.headPos;
+    var valid = function(testcmd){
+        var mov = dirmatrix[testcmd];
+        var newpos = [pos[0] + mov[0],pos[1] + mov[1]];
+        if(newpos[0] < 0 || newpos[1] < 0) return false;
+        if(newpos[0] >= settings.width || newpos[1] >= settings.height) return false;
+        var cell = getCell(newpos[1],newpos[0]);
+        if(cell > 0) return false;
+        lastValidCheck[testcmd] = {pos, mov, newpos, cell}
+        return true;
+    }
+    if(state.applePos[0] > state.headPos[0] && valid("right")){
+        cmd = "right";
+    }else if(state.applePos[0] < state.headPos[0] && valid("left")){
+        cmd = "left";
+    }else if(state.applePos[1] > state.headPos[1] && valid("down")){
+        cmd = "down"
+    }else if(state.applePos[1] < state.headPos[1] && valid("up")){
+        cmd = "up";
+    }else if(valid("right")){
+        cmd = "right";
+    }else if(valid("left")){
+        cmd = "left";
+    }else if(valid("down")){
+        cmd = "down";
+    }else if(valid("up")){
+        cmd = "up";
+    }else{
+        snakeEmoji("129327");
+        console.log("no moves found!");
+    }
+    const keynames = {
+        right: "ArrowRight",
+        left: "ArrowLeft",
+        up: "ArrowUp",
+        down: "ArrowDown",
+    }
+
+    lastcmd = cmd;
+
+    handleKeyControls({key:keynames[cmd]},true)
+    
+}
+
+function getCell(x, y){
+    var cell = window.gameState.maingrid[y][x];
+    return cell;
+}
+
+function gameOver(){
+    window.gameState.$board.addClass("gameover");
+    window.gameState.gameover = true;
+    storeTrial();
+}
+
+function snakeEmoji(code){ //for code reference - https://www.w3schools.com/charsets/ref_emoji.asp
+    var $text = $("#assets .misc text").clone();
+    $text.html(`&#${code};`);
+    $text.css({"font-size":"14px"});
+    //var pos = window.gameState.headPos;
+    //$text.attr("transform-orgin","8 8")
+    $text.attr("transform",`translate(-3,13)`)
+    window.gameState.$board.find(".snake.head").append($text);
+}
+
+$(document).ready(()=>{
+    init();
+})
+
+        </script>
+        <style type="text/css">
+
+.board{
+    background:black;
+    border:2px solid grey;
+}
+
+.board.gameover .snake .main{
+    fill:red;
+}
+.board.gameover .snake .eyes{
+    fill:white;
+}
+
+.arrow.pressed rect{
+    fill:#FD3;
+    stroke: black;
+}
+.arrow.pressed path{
+    fill: black;
+    stroke: black;
+}
+.snake.body .eyes{
+    visibility:hidden;
+}
+
+.debugtext{
+    fill:white;
+    font-size:14px;
+}
+
+#data .label{
+    display:inline-block;
+    min-width:70px;
+}
+#data .out{
+    display:inline-block;
+    font-family:monospace;
+    min-width:30px;
+    height:15px;
+    text-align:center;
+    background:black;
+    border:2px solid grey;
+    color: #0FF;
+}
+
+        </style>
+    </head>
+    <body>
+
+        <div id="assets" style="height:0;width:0;overflow:hidden">
+            <svg>
+                <defs>
+                    <pattern id="matrixdot" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+                        <circle cx="8" cy="8" r="0.5" fill="lightgrey"></circle>
+                    </pattern>
+                    <g class="snake" width="16px" height="16px" transform-origin="8 8">
+                        <circle class="main" cx="8" cy="8" r="7" fill="green"></circle>
+                        <rect class="main" x="8" y="1" width="8" height="14" fill="green"></rect>
+                        <circle class="eyes" cx="6" cy="6" r="1" fill="red"></circle>
+                        <circle class="eyes" cx="6" cy="10" r="1" fill="red"></circle>
+                    </g>
+                    <g class="apple" width="16px" height="16px">
+                        <circle cx="8" cy="8" r="5" fill="red" stroke="#700" stroke-width="1"></circle>
+                    </g>
+                    <g class="misc">
+                        <text>foo</text>
+                    </g>
+                </defs>
+            </svg>
+            <svg class="arrow" width="32px" height="32px">
+                <rect width="32px" height="32px" fill="black" stroke="grey" stroke-width="2"></rect>
+                <path d="M7 5 L16 25 L25 5 Z" stroke="grey" fill="grey"></path>
+            </svg>
+            <svg class="board" width="100%" height="100%"><rect x="0" y="0" width="100%" height="100%" fill="url(#matrixdot)"></svg>
+        </div>
+
+        <div id="game1"></div>
+        <div id="controls"></div>
+        <div id="data"></div>
+
+    </body>
+</html>
