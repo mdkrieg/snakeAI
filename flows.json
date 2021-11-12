@@ -1,0 +1,21 @@
+[
+    {
+        "id": "1aa803c038da67b5",
+        "type": "function",
+        "z": "5eb134c9d62fdcd4",
+        "name": "delay",
+        "func": "setTimeout(function(){\n    console.log(\"RESTART\");\n    node.send({topic:\"init\"});\n}, 5000);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 730,
+        "y": 560,
+        "wires": [
+            [
+                "ae2db7a987e6e65b"
+            ]
+        ]
+    }
+]

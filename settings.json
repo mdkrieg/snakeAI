@@ -1,0 +1,56 @@
+{
+    "httpNodeRoot": "/",
+    "version": "2.0.6",
+    "context": {
+        "default": "memory",
+        "stores": [
+            "memory"
+        ]
+    },
+    "codeEditor": {
+        "lib": "ace",
+        "options": {
+            "theme": "vs"
+        }
+    },
+    "libraries": [
+        {
+            "id": "local",
+            "label": "editor:library.types.local",
+            "user": false,
+            "icon": "font-awesome/fa-hdd-o"
+        },
+        {
+            "id": "examples",
+            "label": "editor:library.types.examples",
+            "user": false,
+            "icon": "font-awesome/fa-life-ring",
+            "types": [
+                "flows"
+            ],
+            "readOnly": true
+        }
+    ],
+    "flowFilePretty": true,
+    "externalModules": {},
+    "flowEncryptionType": "system",
+    "functionExternalModules": true,
+    "editorTheme": {
+        "palette": {},
+        "projects": {
+            "enabled": false,
+            "workflow": {
+                "mode": "manual"
+            }
+        },
+        "languages": [
+            "de",
+            "en-US",
+            "ja",
+            "ko",
+            "ru",
+            "zh-CN",
+            "zh-TW"
+        ]
+    }
+}

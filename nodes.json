@@ -1,0 +1,392 @@
+[
+    {
+        "id": "node-red/inject",
+        "name": "inject",
+        "types": [
+            "inject"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/debug",
+        "name": "debug",
+        "types": [
+            "debug"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/complete",
+        "name": "complete",
+        "types": [
+            "complete"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/catch",
+        "name": "catch",
+        "types": [
+            "catch"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/status",
+        "name": "status",
+        "types": [
+            "status"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/link",
+        "name": "link",
+        "types": [
+            "link in",
+            "link out"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/comment",
+        "name": "comment",
+        "types": [
+            "comment"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/unknown",
+        "name": "unknown",
+        "types": [
+            "unknown"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/function",
+        "name": "function",
+        "types": [
+            "function"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/switch",
+        "name": "switch",
+        "types": [
+            "switch"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/change",
+        "name": "change",
+        "types": [
+            "change"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/template",
+        "name": "template",
+        "types": [
+            "template"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/delay",
+        "name": "delay",
+        "types": [
+            "delay"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/trigger",
+        "name": "trigger",
+        "types": [
+            "trigger"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/exec",
+        "name": "exec",
+        "types": [
+            "exec"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/rbe",
+        "name": "rbe",
+        "types": [
+            "rbe"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/req-append",
+        "name": "req-append",
+        "types": [
+            "append"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/mdk-transform",
+        "name": "transform",
+        "types": [
+            "transform"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/mdk-addclass",
+        "name": "addclass",
+        "types": [
+            "addclass"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/mdk-data",
+        "name": "data",
+        "types": [
+            "data"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/inlinesvg",
+        "name": "inlinesvg",
+        "types": [
+            "inlinesvg"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/svg-rect",
+        "name": "svg-rect",
+        "types": [
+            "svg-rect"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/onload",
+        "name": "onload",
+        "types": [
+            "onload"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/req-listener",
+        "name": "req-listener",
+        "types": [
+            "listener"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/httprequest",
+        "name": "httprequest",
+        "types": [
+            "http request"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/websocket",
+        "name": "websocket",
+        "types": [
+            "websocket in",
+            "websocket out",
+            "websocket-listener",
+            "websocket-client"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/CSV",
+        "name": "CSV",
+        "types": [
+            "csv"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/JSON",
+        "name": "JSON",
+        "types": [
+            "json"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/split",
+        "name": "split",
+        "types": [
+            "split",
+            "join"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/sort",
+        "name": "sort",
+        "types": [
+            "sort"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/batch",
+        "name": "batch",
+        "types": [
+            "batch"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    },
+    {
+        "id": "node-red/file",
+        "name": "file",
+        "types": [
+            "file",
+            "file in"
+        ],
+        "enabled": true,
+        "local": false,
+        "user": false,
+        "module": "node-red",
+        "version": "2.0.6"
+    }
+]

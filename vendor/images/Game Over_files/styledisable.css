@@ -1,0 +1,50 @@
+#red-ui-palette-container-storage{
+    display:none !important;
+}
+#red-ui-palette-container-parser{
+    display:none !important;
+}
+#red-ui-palette-container-network{
+    display:none !important;
+}
+#red-ui-palette-container-sequence{
+    display:none !important;
+}
+.red-ui-palette-node[data-palette-type="complete"]{
+    display:none !important;
+}
+.red-ui-palette-node[data-palette-type="catch"]{
+    display:none !important;
+}
+.red-ui-palette-node[data-palette-type="status"]{
+    display:none !important;
+}
+.red-ui-palette-node[data-palette-type="delay"]{
+    display:none !important;
+}
+.red-ui-palette-node[data-palette-type="trigger"]{
+    display:none !important;
+}
+.red-ui-palette-node[data-palette-type="exec"]{
+    display:none !important;
+}
+.red-ui-palette-node[data-palette-type="rbe"]{
+    display:none !important;
+}
+.red-ui-palette-node[data-palette-type="debug"]{
+    display:none !important;
+}
+.red-ui-palette-node[data-palette-type="change"]{
+    display:none !important;
+}
+.red-ui-palette-node[data-palette-type="switch"]{
+    display:none !important;
+}
+.red-ui-palette-node[data-palette-type="listener"]{
+    display:none !important;
+}
+
+/* DISABLE INJECT NOW BUTTON*/
+#node-inject-test-inject-button{
+    display:none !important;
+}
