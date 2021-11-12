@@ -1,4 +1,8 @@
-
+if(!localStorage.hasOwnProperty("flows")){
+    var flows = $("#defaultFlow").html();
+    console.log("flows: ",flows);
+    localStorage.setItem("flows",'{"flows":' + flows + '}')
+}
 $fakeajax = function(input){
     var data = input.data
     console.log("fakeajax",data);
